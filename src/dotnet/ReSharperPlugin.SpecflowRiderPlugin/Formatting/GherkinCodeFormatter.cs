@@ -1,6 +1,7 @@
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CodeStyle;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
+using JetBrains.ReSharper.Psi.Format;
 using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
@@ -21,11 +22,6 @@ namespace ReSharperPlugin.SpecflowRiderPlugin.Formatting
             _formatterInfoProvider = formatterInfoProvider;
         }
 
-        protected override CodeFormattingContext CreateFormatterContext(CodeFormatProfile profile, ITreeNode firstNode, ITreeNode lastNode, AdditionalFormatterParameters parameters, ICustomFormatterInfoProvider provider)
-        {
-            return new CodeFormattingContext(this, firstNode, lastNode, FormatterLoggerProvider.FormatterLogger, parameters);
-        }
-
         public override MinimalSeparatorType GetMinimalSeparatorByNodeTypes(TokenNodeType leftToken, TokenNodeType rightToken)
         {
             if (leftToken == GherkinTokenTypes.TAG)
@@ -40,9 +36,19 @@ namespace ReSharperPlugin.SpecflowRiderPlugin.Formatting
             return MinimalSeparatorType.NotRequired;
         }
 
-        public override ITreeNode CreateSpace(string indent, ITreeNode replacedSpace)
+        public override ITreeNode CreateSpace(string indent,
+                                              NodeType replacedOrLeftSiblingType)
         {
             return GherkinTokenTypes.WHITE_SPACE.CreateLeafElement(indent);
+        }
+
+        protected override CodeFormattingContext CreateFormatterContext(AdditionalFormatterParameters parameters,
+                                                                        ICustomFormatterInfoProvider provider,
+                                                                        int tabWidth,
+                                                                        SingleLangChangeAccu changeAccu,
+                                                                        FormatTask[] formatTasks)
+        {
+            return new CodeFormattingContext(this, FormatterLoggerProvider.FormatterLogger, parameters, tabWidth, changeAccu, formatTasks);
         }
 
         public override ITreeNode CreateNewLine(LineEnding lineEnding, NodeType lineBreakType = null)
