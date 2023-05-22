@@ -13,6 +13,8 @@
 **/.idea/**/sqlDataSources.xml
 **/.idea/**/dynamic.xml
 **/.idea/**/uiDesigner.xml
+**/.idea/inspectionProfiles/*
+**/.idea/**/deployment.xml
 
 # Gradle:
 # NOTE: gradle.xml is often also ignored here. This is only required if the gradle.xml
