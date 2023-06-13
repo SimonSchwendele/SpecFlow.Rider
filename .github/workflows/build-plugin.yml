@@ -28,7 +28,6 @@ jobs:
     - name: Build plugin
       env:
         SPECFLOW_TELEMETRY_ENABLED: 0
-        APPINSIGHTSINSTRUMENTATIONKEY: ${{ secrets.APPINSIGHTSINSTRUMENTATIONKEY }}
       run: gradle :buildPlugin --stacktrace -PintellijPublishToken=none
     - name: dotnet-tests-report
       uses: zyborg/dotnet-tests-report@v1.4.3
